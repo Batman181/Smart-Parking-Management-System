@@ -203,7 +203,7 @@ Example of entering a vehicle:
 ```json
 POST /vehicle/enter
 {
-  "vehicle_plate": "XY67AB1234",
+  "vehicle_plate": "GJ01AB1234",
   "vehicle_type": "car"
 }
 ```
@@ -213,7 +213,7 @@ What you get back:
 ```json
 {
   "message": "Slot assigned successfully",
-  "vehicle_plate": "XY67AB1234",
+  "vehicle_plate": "GJ01AB1234",
   "assigned_slot": "Z1-S1",
   "zone": "Zone-A",
   "instructions": "Please go to Zone-A, Slot Z1-S1"
@@ -282,4 +282,15 @@ The project presentation covering the problem statement, architecture, technolog
 
 ---
 
-Built for AI212 course using FastAPI, React, YOLOv8, Ray, OR-Tools, Docker and Kubernetes.
+## Team
+
+This project was made as a group assignment for AI212.
+
+| Name | GitHub |
+|---|---|
+| Kush Mistry | [@Batman181](https://github.com/Batman181) |
+| Rishi Datt Gupta | [@rishidatt2006-gif](https://github.com/rishidatt2006-gif) |
+
+---
+
+Built for AI212 using FastAPI, React, YOLOv8, Ray, OR-Tools, Docker and Kubernetes.
