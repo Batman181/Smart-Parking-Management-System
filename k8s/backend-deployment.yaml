@@ -1,0 +1,56 @@
+# k8s/backend-deployment.yaml
+# Lecture 10: Kubernetes Deployment
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  replicas: 2           # Run 2 copies for reliability
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: smart-parking-backend:latest
+          imagePullPolicy: Never   # Use local image with minikube
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DETECTION_SERVICE_URL
+              value: "http://detection-service-svc:8001"
+            - name: NOTIFICATION_SERVICE_URL
+              value: "http://express-notification-svc:3001"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-svc
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: NodePort

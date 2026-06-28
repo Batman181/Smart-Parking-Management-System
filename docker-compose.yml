@@ -1,0 +1,48 @@
+services:
+  detection-service:
+    build: ./detection-service
+    container_name: detection-service
+    ports:
+      - "8001:8001"
+    networks:
+      - parking-network
+
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - detection-service
+      - express-notification
+    environment:
+      - DETECTION_SERVICE_URL=http://detection-service:8001
+      - NOTIFICATION_SERVICE_URL=http://express-notification:3001
+    networks:
+      - parking-network
+
+  express-notification:
+    build: ./express-notification
+    container_name: express-notification
+    ports:
+      - "3001:3001"
+    networks:
+      - parking-network
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        REACT_APP_API_URL: http://localhost:8000
+        REACT_APP_NOTIFY_URL: http://localhost:3001
+    container_name: frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - parking-network
+
+networks:
+  parking-network:
+    driver: bridge

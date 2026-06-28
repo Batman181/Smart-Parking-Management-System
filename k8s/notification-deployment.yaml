@@ -1,0 +1,33 @@
+# k8s/notification-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express-notification
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: express-notification
+  template:
+    metadata:
+      labels:
+        app: express-notification
+    spec:
+      containers:
+        - name: express-notification
+          image: smart-parking-notification:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: express-notification-svc
+spec:
+  selector:
+    app: express-notification
+  ports:
+    - port: 3001
+      targetPort: 3001
+  type: ClusterIP
